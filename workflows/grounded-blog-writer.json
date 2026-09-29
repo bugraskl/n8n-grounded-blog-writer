@@ -1,0 +1,1257 @@
+{
+  "name": "Grounded Blog Writer (WordPress)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 6 * * 2"
+            }
+          ]
+        }
+      },
+      "id": "f175e989-23fc-4c72-94c7-e52000774d03",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"wp_site_url\": \"https://your-site.example.com\",\n  \"public_url_base\": \"\",\n  \"post_status\": \"publish\",\n  \"wp_category_ids\": [],\n  \"language\": \"English\",\n  \"locale\": \"en-US\",\n  \"audience\": \"software developers\",\n  \"autocomplete_hl\": \"en\",\n  \"autocomplete_gl\": \"us\",\n  \"keyword_examples\": [\n    \"docker compose tutorial\",\n    \"react server components explained\",\n    \"postgresql index types\",\n    \"claude code vs cursor\",\n    \"kubernetes ingress explained\"\n  ],\n  \"banned_phrases\": [\n    \"in this post\",\n    \"in this article\",\n    \"nowadays\",\n    \"in the rapidly evolving world of\",\n    \"plays an important role\",\n    \"in conclusion\",\n    \"it should be noted that\",\n    \"game-changing\",\n    \"modern\",\n    \"powerful\",\n    \"efficient\",\n    \"revolutionary\"\n  ],\n  \"fake_experience_patterns\": [\n    \"15 years of experience\",\n    \"I personally worked\",\n    \"we experienced this in our project\"\n  ],\n  \"require_code_example\": true,\n  \"target_words_min\": 1800,\n  \"target_words_max\": 2800,\n  \"gate_min_words\": 1200,\n  \"overused_window_days\": 14,\n  \"model_research\": \"gemini-pro-latest\",\n  \"model_writer\": \"gemini-pro-latest\",\n  \"model_image_prompt\": \"gemini-3-flash-preview\",\n  \"model_image\": \"gemini-3.1-flash-image\",\n  \"trend_sources\": {\n    \"hackernews\": {\n      \"enabled\": true,\n      \"min_points\": 150\n    },\n    \"devto\": {\n      \"enabled\": true,\n      \"tag\": \"\"\n    },\n    \"github\": {\n      \"enabled\": true,\n      \"extra_query\": \"\"\n    },\n    \"reddit\": {\n      \"enabled\": true,\n      \"subreddits\": [\n        \"programming\"\n      ]\n    }\n  },\n  \"http_user_agent\": \"Mozilla/5.0 (compatible; n8n-blog-bot/1.0)\",\n  \"categories\": [\n    {\n      \"code\": \"A\",\n      \"name\": \"AI Coding Agents & Developer AI\",\n      \"topics\": \"Claude Code, Cursor, agent workflows, MCP protocol, code review automation, prompt engineering for dev tools, tool-use patterns\"\n    },\n    {\n      \"code\": \"B\",\n      \"name\": \"Practical ML Engineering\",\n      \"topics\": \"model deployment, A/B testing for ML, feature stores, data drift, training pipeline design, MLOps fundamentals\"\n    },\n    {\n      \"code\": \"C\",\n      \"name\": \"AI Hardware & Deployment\",\n      \"topics\": \"GPU inference, edge devices, quantization, ONNX, vLLM, model serving strategies\"\n    },\n    {\n      \"code\": \"D\",\n      \"name\": \"Web Backend Engineering\",\n      \"topics\": \"REST/GraphQL API design, rate limiting, caching layers, websocket scaling, background job processing, queue patterns\"\n    },\n    {\n      \"code\": \"E\",\n      \"name\": \"Web Frontend Engineering\",\n      \"topics\": \"React/Vue/Svelte patterns, state management, performance (Core Web Vitals), bundle optimization, SSR vs CSR vs ISR, hydration\"\n    },\n    {\n      \"code\": \"F\",\n      \"name\": \"Mobile Development\",\n      \"topics\": \"Flutter, React Native, native iOS/Android, cross-platform strategies, mobile performance, offline-first design\"\n    },\n    {\n      \"code\": \"G\",\n      \"name\": \"Databases & Query Engineering\",\n      \"topics\": \"index design, query optimization, partitioning, replication, ACID vs eventual consistency, time-series, vector DB\"\n    },\n    {\n      \"code\": \"H\",\n      \"name\": \"Data Engineering & Streaming\",\n      \"topics\": \"Kafka, Pulsar, Flink, Spark, batch vs streaming, schema evolution, data lake/lakehouse, ETL patterns\"\n    },\n    {\n      \"code\": \"I\",\n      \"name\": \"DevOps & CI/CD\",\n      \"topics\": \"pipeline design, GitOps, deployment strategies (blue-green, canary), Infrastructure-as-Code, secrets management\"\n    },\n    {\n      \"code\": \"J\",\n      \"name\": \"Cloud Infrastructure & Kubernetes\",\n      \"topics\": \"K8s patterns, container security, networking, autoscaling, service mesh, multi-cloud, cost optimization\"\n    },\n    {\n      \"code\": \"K\",\n      \"name\": \"Security & Authentication\",\n      \"topics\": \"OAuth flows, JWT pitfalls, zero-trust, secrets rotation, mTLS, OWASP, supply chain security\"\n    },\n    {\n      \"code\": \"L\",\n      \"name\": \"Software Architecture & Design\",\n      \"topics\": \"DDD, hexagonal architecture, event sourcing, CQRS, modular monolith vs microservices, saga pattern, ADR\"\n    },\n    {\n      \"code\": \"M\",\n      \"name\": \"Performance Engineering\",\n      \"topics\": \"profiling, memory optimization, concurrency, lock contention, cache locality, latency budgets, p99 optimization\"\n    },\n    {\n      \"code\": \"N\",\n      \"name\": \"Testing & Quality Engineering\",\n      \"topics\": \"test pyramid, contract testing, mutation testing, property-based testing, integration test strategies, fuzz testing\"\n    }\n  ],\n  \"formats\": [\n    {\n      \"code\": \"migration\",\n      \"name\": \"Migration Guide\",\n      \"description\": \"Gradual migration from one technology to another\",\n      \"guide\": \"Current state -> target state. Phased migration plan. Rollback strategy. Risk points.\"\n    },\n    {\n      \"code\": \"tutorial\",\n      \"name\": \"Tutorial / Build from Scratch\",\n      \"description\": \"Step-by-step guide that builds something from scratch with a working example\",\n      \"guide\": \"Step-by-step structure (Step 1, Step 2, ...). Every step contains a working code example. End with a \\\"production readiness\\\" checklist.\"\n    },\n    {\n      \"code\": \"comparison\",\n      \"name\": \"Comparison / X vs Y\",\n      \"description\": \"Comparison of two or more technologies or approaches\",\n      \"guide\": \"Comparison table + deep analysis of each option. A clear \\\"which one for which scenario\\\" section.\"\n    },\n    {\n      \"code\": \"patterns\",\n      \"name\": \"Patterns / Best Practices\",\n      \"description\": \"A collection of 3-7 patterns in one area\",\n      \"guide\": \"List 3-7 patterns. For each: problem, solution, working code, when to apply it, when not to apply it.\"\n    },\n    {\n      \"code\": \"case-study\",\n      \"name\": \"Case Study / Optimization\",\n      \"description\": \"Deep technical analysis of one concrete case\",\n      \"guide\": \"One concrete case. Before/after metrics, decisions made, trade-offs.\"\n    },\n    {\n      \"code\": \"pitfalls\",\n      \"name\": \"Mistakes / Pitfalls\",\n      \"description\": \"3-5 common mistakes in one area and how to fix them\",\n      \"guide\": \"3-5 common mistakes. For each: why it happens, how to detect it, how to fix it, a real-world example.\"\n    },\n    {\n      \"code\": \"decision\",\n      \"name\": \"Decision Guide / When to Use\",\n      \"description\": \"A decision framework for when to choose X\",\n      \"guide\": \"Decision matrix + criteria + alternatives. Summary in \\\"If X -> Y\\\" form.\"\n    }\n  ],\n  \"google_indexing_enabled\": false,\n  \"indexnow_key\": \"\",\n  \"indexnow_key_location\": \"\",\n  \"deploy_hook_url\": \"\",\n  \"mail_from\": \"blog-bot@example.com\",\n  \"mail_to\": \"you@example.com\"\n}",
+        "options": {}
+      },
+      "id": "f54f7e1f-d89b-4490-b2a3-10a6774279e4",
+      "name": "Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ String($('Config').first().json.wp_site_url || '').replace(/\\/+$/, '') }}/wp-json/wp/v2/posts?per_page=50&_fields=id,date,date_gmt,title,link,slug",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {}
+      },
+      "id": "3c5d2275-8ca3-4ec4-beb6-d90a9732a195",
+      "name": "Fetch Last 50 Posts",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        448,
+        0
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// CATEGORY + FORMAT ROTATION + \"OVERUSED TECHNOLOGIES\" BLACKLIST\n// The workflow runs weekly, so rotation is driven by the week of the year.\n// (A day-of-year index that advances by 7 per run would only ever visit 2 of 14 categories.)\nconst C = $('Config').first().json;\n// \"Fetch Last 50 Posts\" has alwaysOutputData on, so a brand-new blog yields one empty item.\nconst posts = $input.all().filter(p => p.json && p.json.title);\nconst clean = s => String(s || '').replace(/<[^>]+>/g, '');\n\nconst allTitles = posts.map(p => `- ${clean(p.json.title.rendered)}`).join('\\n');\n\n// Technologies that dominated the last N days of titles -> the topic prompt must not make them the main topic.\nconst windowDays = Number(C.overused_window_days) || 14;\nconst now = Date.now();\nconst recentPosts = posts.filter(p => {\n  const t = Date.parse(p.json.date || p.json.date_gmt || '');\n  return !isNaN(t) && (now - t) <= windowDays * 24 * 60 * 60 * 1000;\n});\nconst techRegex = /\\b([A-Z][a-zA-Z]*(?:\\d+(?:\\.\\d+)?)?|[A-Z]{2,}(?:\\d+(?:\\.\\d+)?)?)\\b/g;\nconst stopWords = new Set([\n  // generic acronyms\n  'I','II','III','IV','API','SQL','HTTP','URL','JSON','XML','YAML','CSS','HTML','JS','TS','UI','UX','OS','PR','DB','CI','CD','EU','US',\n  // common English title words (Title Case would otherwise flood the list)\n  'THE','AND','FOR','WITH','HOW','WHAT','WHEN','WHY','WHO','WHICH','WHERE','YOUR','YOU','ARE','CAN','USE','USING','GUIDE','FROM',\n  'INTO','THAT','THIS','BEST','PRACTICES','PATTERNS','STEP','BUILD','BUILDING','COMMON','MISTAKES','TUTORIAL','EXAMPLE','EXAMPLES',\n  'WITHOUT','BETWEEN','SHOULD','NOT','ITS','OUR','ALL','NEW','GET','MAKE','VERSUS','EXPLAINED','INTRODUCTION','COMPLETE',\n  'PRACTICAL','DECISION','FRAMEWORK','CHOOSE','CHOOSING','OVER','ABOUT','DOES','WORK','WORKS','FIX','FIXING','PITFALLS','CASE',\n  'STUDY','MIGRATION','MIGRATING','SCRATCH','ONE','TWO','THREE','FOUR','FIVE','WAYS','TIPS','VIA','AFTER','BEFORE',\n  'MORE','LESS','THAN'\n]);\nconst techFreq = {};\nfor (const p of recentPosts) {\n  const matches = clean(p.json.title.rendered).match(techRegex) || [];\n  for (const m of matches) {\n    if (m.length < 3) continue;\n    if (stopWords.has(m.toUpperCase())) continue;\n    techFreq[m] = (techFreq[m] || 0) + 1;\n  }\n}\nconst overusedTechnologies = Object.entries(techFreq)\n  .sort((a, b) => b[1] - a[1])\n  .slice(0, 15)\n  .map(([k]) => k)\n  .join(', ') || `(no notable repetition in the last ${windowDays} days)`;\n\nconst categories = Array.isArray(C.categories) ? C.categories : [];\nconst formats = Array.isArray(C.formats) ? C.formats : [];\nif (!categories.length) throw new Error('Config.categories is empty');\nif (!formats.length) throw new Error('Config.formats is empty');\n\n// Week-of-year rotation ($now respects the workflow / GENERIC_TIMEZONE setting)\nconst dayOfYear = $now.ordinal;\nconst weekIdx = Math.floor(dayOfYear / 7);\nconst sel = categories[weekIdx % categories.length];\nconst fmt = formats[weekIdx % formats.length];\n\n// Internal link candidates: WordPress link -> public URL (headless frontends)\nconst wpBase = String(C.wp_site_url || '').replace(/\\/+$/, '');\nconst pubBase = String(C.public_url_base || '').replace(/\\/+$/, '');\nconst toPublic = link => (wpBase && pubBase && link.indexOf(wpBase) === 0) ? pubBase + link.substring(wpBase.length) : link;\nconst internalLinks = posts.slice(0, 40).map(p => `- ${clean(p.json.title.rendered)} → ${toPublic(p.json.link || '')}`).join('\\n');\n\nreturn [{\n  json: {\n    all_titles: allTitles || '(no posts yet)',\n    overused_technologies: overusedTechnologies,\n    overused_window_days: windowDays,\n    category_code: sel.code,\n    category_name: sel.name,\n    category_topics: sel.topics,\n    format_code: fmt.code,\n    format_name: fmt.name,\n    format_description: fmt.description,\n    format_guide: fmt.guide,\n    all_formats: formats,\n    existing_titles: posts.map(p => clean(p.json.title.rendered)),\n    internal_links: internalLinks || '(no posts yet)',\n    day_of_year: dayOfYear,\n    post_count: posts.length\n  }\n}];\n"
+      },
+      "id": "7f3697fb-b7c6-46a5-841c-93e26f5881fe",
+      "name": "Category + Format Rotation",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// This week's real trend signals: Hacker News, dev.to, GitHub, Reddit.\n// Every source is optional (Config.trend_sources) and fails silently: a blocked source never stops the run.\nconst C = $('Config').first().json;\nconst T = C.trend_sources || {};\nconst UA = C.http_user_agent || 'Mozilla/5.0 (compatible; n8n-blog-bot/1.0)';\nconst get = async (url, headers = {}) => {\n  try {\n    const r = await this.helpers.httpRequest({ url, headers: { 'User-Agent': UA, ...headers }, timeout: 15000 });\n    return typeof r === 'string' ? JSON.parse(r) : r;\n  } catch (e) { return null; }\n};\nconst out = [];\nconst weekAgo = Math.floor(Date.now() / 1000) - 7 * 86400;\n\nif (T.hackernews?.enabled !== false) {\n  const minPoints = Number(T.hackernews?.min_points) || 150;\n  const hn = await get('https://hn.algolia.com/api/v1/search?tags=story&hitsPerPage=30&numericFilters=' + encodeURIComponent(`created_at_i>${weekAgo},points>${minPoints}`));\n  for (const h of (hn?.hits || [])) out.push(`[HN ${h.points}p] ${h.title}`);\n}\n\nif (T.devto?.enabled !== false) {\n  const tag = String(T.devto?.tag || '').trim();\n  const dev = await get('https://dev.to/api/articles?top=7&per_page=25' + (tag ? '&tag=' + encodeURIComponent(tag) : ''));\n  for (const a of (Array.isArray(dev) ? dev : [])) out.push(`[dev.to ${a.public_reactions_count}♥] ${a.title} (${(a.tag_list || []).map(t => '#' + t).join(' ')})`);\n}\n\nif (T.github?.enabled !== false) {\n  const since = new Date(Date.now() - 14 * 86400000).toISOString().slice(0, 10);\n  const extra = String(T.github?.extra_query || '').trim();\n  const q = `created:>${since}` + (extra ? ' ' + extra : '');\n  const gh = await get(`https://api.github.com/search/repositories?q=${encodeURIComponent(q)}&sort=stars&order=desc&per_page=15`, { Accept: 'application/vnd.github+json' });\n  for (const r of (gh?.items || [])) out.push(`[GitHub ★${r.stargazers_count}] ${r.full_name}: ${(r.description || '').slice(0, 120)}`);\n}\n\nif (T.reddit?.enabled !== false) {\n  const subs = Array.isArray(T.reddit?.subreddits) && T.reddit.subreddits.length ? T.reddit.subreddits : ['programming'];\n  for (const sub of subs) {\n    const rd = await get(`https://www.reddit.com/r/${encodeURIComponent(sub)}/top.json?t=week&limit=20`);\n    for (const c of (rd?.data?.children || [])) out.push(`[r/${sub} ${c.data.score}] ${c.data.title}`);\n  }\n}\n\nreturn [{ json: { trend_signals: out.join('\\n') || '(no trend data could be fetched — check with Google Search yourself)', trend_count: out.length } }];\n"
+      },
+      "id": "a5ac703f-7bef-47d9-b4ed-67006fb095e6",
+      "name": "Trend Signals",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Builds the prompt for the Google-Search-grounded topic brainstorm (6 candidates).\nconst C = $('Config').first().json;\nconst r = $('Category + Format Rotation').first().json;\nconst trend = $json.trend_signals;\nconst today = $now.toFormat('yyyy-MM-dd');\nconst lang = C.language || 'English';\nconst audience = C.audience || 'software developers';\nconst formatList = r.all_formats.map(f => `- ${f.name}: ${f.description}`).join('\\n');\nconst examples = (C.keyword_examples || []).map(e => `\"${e}\"`).join(', ');\n\nconst prompt = `You are the content strategist of a technical blog for ${audience}. The blog is written in ${lang}. Today's date: ${today}.\nGoal: find topics with high organic-search and sharing potential that are CURRENT and that people ACTUALLY SEARCH FOR.\n\nUse the Google Search tool to check: important releases and announcements from the last 2-4 weeks, what ${audience} are discussing most right now, and questions people search for where good ${lang}-language resources are scarce. If your knowledge is outdated, update it with search; never present old versions or old product names as current.\n\nTHIS WEEK'S TREND SIGNALS (Hacker News, dev.to, GitHub, Reddit)\n${trend}\n\nTHIS WEEK'S FOCUS CATEGORY: ${r.category_name}\nSubtopics: ${r.category_topics}\n\nTHIS WEEK'S SUGGESTED FORMAT: ${r.format_name}\n\nAVAILABLE FORMATS\n${formatList}\n\nTECHNOLOGIES COVERED A LOT IN THE LAST ${r.overused_window_days} DAYS (do not make them the main topic): ${r.overused_technologies}\n\nEXISTING POSTS (do not repeat the same topic or a very similar angle)\n${r.all_titles}\n\nTASK: produce 6 candidate topics.\n- 3 candidates from the focus category, 3 candidates from the trend signals (any area relevant to ${audience}).\n- Each candidate must either (a) be based on a concrete development that is in the news right now (new release, new tool, important change, debate) or (b) answer an evergreen question with consistently high search volume.\n- Micro-niche topics that only a handful of experts care about are FORBIDDEN. It must be a need that an intermediate reader would type into Google.\n- focus_keyword: a 2-4 word search phrase that a reader would REALLY type into Google, in ${lang}, lowercase. Technical terms may stay in English. Examples: ${examples}.\n- title: 45-70 characters, in ${lang}. The focus_keyword appears in the first half of the title and the title promises a clear benefit.\n- Invented numeric results in the title (\"80% faster\", \"from 800ms to 120ms\") are FORBIDDEN. Empty adjectives such as \"modern, powerful, fast, efficient, revolutionary, ultimate\" are FORBIDDEN.\n- A bare \"What is X?\" title is not allowed, but concrete angles such as \"What Is X and When Should You Use It? A Guide with Examples\" are fine.\n\nOUTPUT: return only a JSON array. No explanation, markdown or code fence before or after it.\n[{\"title\":\"...\",\"focus_keyword\":\"...\",\"secondary_keywords\":[\"...\",\"...\",\"...\"],\"format\":\"<one of the format names above, verbatim>\",\"trend_score\":1,\"why_now\":\"one sentence: concrete development or evergreen need\",\"target_reader\":\"...\",\"category\":\"...\"}]\ntrend_score is an integer 1-5: 5 = a new development everyone is talking about right now, 1 = timeless topic.`;\n\nreturn [{ json: { prompt, temperature: 0.9 } }];\n"
+      },
+      "id": "405dfdac-f4d4-4aef-ac4f-d91e607732ba",
+      "name": "Build Topic Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/models/{{ $('Config').first().json.model_research }}:generateContent",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googlePalmApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { contents: [{ role: 'user', parts: [{ text: $json.prompt }] }], tools: [{ google_search: {} }], generationConfig: { temperature: $json.temperature ?? 0.7, maxOutputTokens: 24000 } } }}",
+        "options": {
+          "timeout": 240000
+        }
+      },
+      "id": "6cfb933b-89a2-4589-ba3f-02ef6f2bc622",
+      "name": "Topic Candidates (Grounded)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1344,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse the topic candidates, measure REAL search demand with Google Autocomplete, pick the best one,\n// and build the prompt for the grounded research brief.\nconst C = $('Config').first().json;\nconst raw = $input.first().json;\nconst txt = (raw?.candidates?.[0]?.content?.parts || []).map(p => p.text || '').join('\\n');\nconst m = txt.match(/\\[[\\s\\S]*\\]/);\nlet arr;\ntry { arr = JSON.parse(m[0]); } catch (e) { throw new Error('Could not parse topic candidates: ' + txt.slice(0, 500)); }\narr = (Array.isArray(arr) ? arr : []).filter(c => c && c.title && c.focus_keyword).slice(0, 8);\nif (!arr.length) throw new Error('No valid topic candidates: ' + txt.slice(0, 500));\n\nconst r = $('Category + Format Rotation').first().json;\nconst locale = C.locale || 'en-US';\nconst lang = C.language || 'English';\nconst hl = encodeURIComponent(C.autocomplete_hl || 'en');\nconst gl = encodeURIComponent(C.autocomplete_gl || 'us');\nconst lc = s => String(s || '').toLocaleLowerCase(locale);\n// Unicode-aware tokenizer (works for English, Turkish, German, ...). HTML entities for quotes are normalized first.\nconst toks = s => lc(s).replace(/&#8217;|&#8216;|’|‘/g, \"'\").replace(/<[^>]+>/g, '').replace(/[^\\p{L}\\p{N}\\s]/gu, ' ').split(/\\s+/).filter(w => w.length > 2);\nconst existing = (r.existing_titles || []).map(t => new Set(toks(t)));\nconst overlap = (a, b) => { let i = 0; for (const x of a) if (b.has(x)) i++; return i / Math.max(1, Math.min(a.size, b.size)); };\n\n// Google Autocomplete (unofficial endpoint). null = request failed, [] = no suggestions.\nconst ac = async q => {\n  try {\n    const res = await this.helpers.httpRequest({ url: `https://suggestqueries.google.com/complete/search?client=firefox&hl=${hl}&gl=${gl}&q=` + encodeURIComponent(q), headers: { 'User-Agent': 'Mozilla/5.0' }, timeout: 10000 });\n    const j = typeof res === 'string' ? JSON.parse(res) : res;\n    return Array.isArray(j?.[1]) ? j[1] : [];\n  } catch (e) { return null; }\n};\n\nfor (const c of arr) {\n  const kw = lc(c.focus_keyword).trim();\n  const kwToks = toks(kw);\n  const head = kw.split(/\\s+/).slice(0, kw.split(/\\s+/).length > 2 ? 2 : 1).join(' ');\n  const s1 = await ac(kw);          // does Google complete the full keyword?\n  const s2 = await ac(head + ' ');  // how broad is the demand around its head term?\n  const hits = s1 ? s1.filter(s => kwToks.every(t => lc(s).includes(t))).length : 0;\n  const exact = s1 ? s1.some(s => lc(s).startsWith(kw)) : false;\n  const breadth = s2 ? s2.length : 0;\n  const tSet = new Set(toks(c.title));\n  const maxOverlap = existing.length ? Math.max(...existing.map(e => overlap(tSet, e))) : 0;\n  let score = (exact ? 4 : 0) + hits + breadth * 0.3 + (Number(c.trend_score) || 0) * 1.2;\n  if (maxOverlap >= 0.6) score -= 20;  // too close to an existing post\n  c._demand = { exact, hits, breadth, maxOverlap: +maxOverlap.toFixed(2), score: +score.toFixed(2), suggestions: (s1 || []).slice(0, 5) };\n}\narr.sort((a, b) => b._demand.score - a._demand.score);\nconst sel = arr[0];\nconst fmt = r.all_formats.find(f => lc(f.name) === lc(sel.format)) || r.all_formats.find(f => f.code === r.format_code);\n\nconst today = $now.toFormat('yyyy-MM-dd');\nconst prompt = `You are a senior technical researcher. Today's date: ${today}. Use Google Search to do CURRENT research for the blog post below and prepare a research brief for the writer.\n\nTOPIC: ${sel.title}\nFOCUS KEYWORD: ${sel.focus_keyword}\nSECONDARY KEYWORDS: ${(sel.secondary_keywords || []).join(', ')}\nFORMAT: ${fmt.name}\nWHY NOW: ${sel.why_now || '-'}\nTARGET READER: ${sel.target_reader || 'intermediate to senior ' + (C.audience || 'software developers')}\n\nThe brief must contain these sections (write it in ${lang}, as bullet points, only verifiable information):\n1. CURRENT STATE: current stable versions of the relevant tools/libraries/services and their release dates, recent important changes (with dates). Deprecated APIs.\n2. ACCURATE TECHNICAL DETAILS: API/function names, commands, config keys and default values based on the official documentation.\n3. READER QUESTIONS: at least 6 questions that someone searching for this keyword wants answered (\"People also ask\" style).\n4. COMPETITOR ANALYSIS: the subtopics covered by the top-ranking content on this topic and the angles they MISS (our opportunity to stand out).\n5. PITFALLS: common mistakes, limitations, trade-offs, when NOT to use it.\n6. DATA: verified numeric data found in the sources (with the source name). Do not write any number you are not sure about.\n7. OFFICIAL SOURCES: URLs of the official documentation and project pages (only permanent, official addresses).\n\nLength: 700-1100 words. No introduction, conclusion or commentary; only the brief.`;\n\nconst candidatesSummary = arr.map((c, i) => `${i === 0 ? '✅' : '•'} [${c._demand.score}] ${c.title} — \"${c.focus_keyword}\" (suggestions: ${c._demand.hits}, exact match: ${c._demand.exact ? 'yes' : 'no'}, trend: ${c.trend_score}, overlap: ${c._demand.maxOverlap})`).join('\\n');\n\nreturn [{ json: {\n  title: sel.title,\n  focus_keyword: sel.focus_keyword,\n  secondary_keywords: sel.secondary_keywords || [],\n  why_now: sel.why_now || '',\n  target_reader: sel.target_reader || '',\n  format_name: fmt.name,\n  format_guide: fmt.guide,\n  demand: sel._demand,\n  candidates_summary: candidatesSummary,\n  prompt,\n  temperature: 0.3\n} }];\n"
+      },
+      "id": "f7b3eb5e-05f9-4865-84c4-4aee91e1d797",
+      "name": "Pick Topic",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1568,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/models/{{ $('Config').first().json.model_research }}:generateContent",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googlePalmApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { contents: [{ role: 'user', parts: [{ text: $json.prompt }] }], tools: [{ google_search: {} }], generationConfig: { temperature: $json.temperature ?? 0.7, maxOutputTokens: 24000 } } }}",
+        "options": {
+          "timeout": 240000
+        }
+      },
+      "id": "448fc0c9-0b4f-4bb0-870b-9b7e865b7aa7",
+      "name": "Research Brief (Grounded)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1792,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pull the research brief text + grounding sources out of the Gemini response.\nconst raw = $input.first().json;\nconst cand = raw?.candidates?.[0] || {};\nconst brief = (cand.content?.parts || []).map(p => p.text || '').join('\\n').trim();\nif (brief.length < 800) throw new Error('Research brief too short or empty: ' + JSON.stringify(raw).slice(0, 500));\nconst gm = cand.groundingMetadata || {};\nconst sources = [...new Set((gm.groundingChunks || []).map(c => c.web?.title).filter(Boolean))];\nreturn [{ json: { brief, source_domains: sources, search_queries: gm.webSearchQueries || [] } }];\n"
+      },
+      "id": "e4056dcd-c834-4a2d-ad0f-33029a3daba0",
+      "name": "Extract Brief",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2016,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the art director who writes cover-image prompts for technical articles (the prompt goes to an AI image model). Write one specific, editorial cover-image prompt that is directly tied to the title below.\n\nARTICLE TITLE: {{ $('Pick Topic').first().json.title }}\nCATEGORY: {{ $('Category + Format Rotation').first().json.category_name }}\nFORMAT: {{ $('Pick Topic').first().json.format_name }}\n\nANALYZE INTERNALLY FIRST\n- Pick the main technical object/actor in the title.\n- Pick the action and relationship in the title: flow, splitting, compression, monitoring, comparison, latency, scaling, debugging, etc.\n- Build one single visual metaphor; do not turn unrelated technology icons into a collage.\n- Objects and scene must be specific enough that someone who read the title would recognize the topic.\n\nCATEGORY-SPECIFIC GUIDANCE\n- AI/ML/computer vision: camera sensor, abstract image layers, bounding-box-like geometric frames, inference pipeline, model layers; no random robots or brains.\n- Backend/API/streaming: request flow, queues, router nodes, abstract data paths without dashboards; no server racks or hackers.\n- Database/query: data tables, index tree, query paths and a visual metaphor of selected records; no generic database server.\n- Frontend/mobile: component layers, responsive surfaces, device frames and render flow; no random code screens.\n- Hardware/deployment: edge device, model flow on a chip, energy/heat or quantization layers; no generic GPU photo.\n\nVISUAL LANGUAGE\n- Premium technical magazine cover, 16:9 landscape, one main focal point, strong negative space.\n- Pick 2-3 colors that suit the topic; do not repeat the same blue neon network aesthetic in every post.\n- Photorealistic editorial still life or a controlled 3D conceptual scene; choose based on the topic.\n- No text, letters, numbers, logos, brands, watermarks, readable UI, real code, human faces or cliché hacker scenes.\n- No overly abstract, generic or unrelated technology imagery.\n- Do not add products/brands/technologies that are not in the title.\n\nOUTPUT: only the image prompt, in English. 2 sentences, 55-90 words. Specify composition, main object, action/metaphor, material, lighting, color, camera and the 16:9 aspect ratio. No explanation or quotation marks.",
+        "batching": {}
+      },
+      "id": "a477e9fc-ff95-495f-a284-2632efa166f5",
+      "name": "Write Image Prompt",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        0,
+        440
+      ],
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "modelName": "=models/{{ $('Config').first().json.model_image_prompt }}",
+        "options": {}
+      },
+      "id": "7086b348-0ca3-4719-b673-e3979c42edeb",
+      "name": "Gemini Flash (Image Prompt)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        64,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1/models/{{ $('Config').first().json.model_image }}:generateContent",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googlePalmApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\n  contents: [\n    {\n      parts: [\n        {\n          text: $json.text\n        }\n      ]\n    }\n  ],\n  generationConfig: {\n    responseModalities: [\"IMAGE\"],\n    imageConfig: {\n      aspectRatio: \"16:9\",\n      imageSize: \"1K\"\n    }\n  }\n} }}",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "id": "9737b76c-ea1c-4239-a22c-4ebb9e2ecbf6",
+      "name": "Generate Cover Image",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        352,
+        440
+      ],
+      "retryOnFail": true,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract base64 + mime type from the Gemini image response (kept as a string until publishing).\nconst item = $input.first().json;\nconst parts = item?.candidates?.[0]?.content?.parts || [];\nconst imagePart = parts.find(part => part?.inlineData?.data);\nif (!imagePart) {\n  throw new Error('No image found in the Gemini response: ' + JSON.stringify(item).slice(0, 500));\n}\nconst base64 = imagePart.inlineData.data;\nconst mimeType = imagePart.inlineData.mimeType || 'image/png';\nlet extension = mimeType.split('/')[1] || 'png';\nif (extension === 'jpeg') extension = 'jpg';\n\nreturn [{\n  json: {\n    image_base64: base64,\n    image_mime: mimeType,\n    image_ext: extension,\n    image_size_bytes: Buffer.from(base64, 'base64').length\n  }\n}];\n"
+      },
+      "id": "528d90ac-7d3a-4c64-ae13-6d03f2d71f41",
+      "name": "Extract Image Base64",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        576,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an experienced engineer and technical writer writing for {{ $('Config').first().json.audience }}. Based on the research brief below, write a blog post that ranks well in search and is genuinely useful to the reader. Write the article in {{ $('Config').first().json.language }}. Your output is pure JSON.\n\nTODAY: {{ $now.toFormat('yyyy-MM-dd') }}\nDRAFT TITLE: {{ $('Pick Topic').first().json.title }}\nFOCUS KEYWORD: {{ $('Pick Topic').first().json.focus_keyword }}\nSECONDARY KEYWORDS: {{ $('Pick Topic').first().json.secondary_keywords.join(', ') }}\nTARGET READER: {{ $('Pick Topic').first().json.target_reader }}\nWHY NOW: {{ $('Pick Topic').first().json.why_now }}\nFORMAT: {{ $('Pick Topic').first().json.format_name }}\nFORMAT GUIDE: {{ $('Pick Topic').first().json.format_guide }}\n\nRESEARCH BRIEF (your source of current, verified information)\n{{ $('Extract Brief').first().json.brief }}\n\nINTERNAL LINK CANDIDATES (existing posts on the blog)\n{{ $('Category + Format Rotation').first().json.internal_links }}\n\nCONTENT RULES\n1. Search intent: the first 2-3 sentences of the introduction answer the reader's question DIRECTLY (clear enough to be quoted in featured snippets and AI Overviews). The focus keyword appears naturally within the first 100 words; secondary keywords are spread naturally across h2/h3 headings and the text. No keyword stuffing.\n2. Freshness and accuracy: write versions, dates, statistics and API names ONLY based on the brief. Do NOT invent numbers, benchmarks or \"company X experienced this\" stories that are not in the brief. Do not present old models, versions or product names as current.\n3. Depth: {{ $('Config').first().json.target_words_min }}-{{ $('Config').first().json.target_words_max }} words. No padding; every section teaches the reader something new. Always cover the angles that the \"competitor analysis\" in the brief says are missing.\n4. Practicality: {{ $('Config').first().json.require_code_example === false ? 'at least 2 concrete, realistic, practical examples' : 'at least 2 working, realistic code or configuration examples (with short explanations)' }}. A comparison or decision table where it fits, and always an implementation checklist.\n5. Trade-offs: include a \"When not to use it / what are the alternatives\" section.\n6. Internal links: link to 2-3 posts from the list above that are GENUINELY related, with natural anchor text inside a sentence: <a href=\"URL\">...</a>. If no post is related, do not force it.\n7. External links: link to 1-3 of the official documentation URLs from the brief. Never invent URLs that are not in the brief.\n8. FAQ: write 4-6 of the reader questions from the brief as h3 question + p answer; each answer 40-70 words, its first sentence answers directly.\n9. Tone: like an experienced engineer explaining something to a colleague; clear, concrete, plain {{ $('Config').first().json.language }}. Invented personal experience (\"we ran into this in our project\", \"in my 15 years of experience\") is FORBIDDEN.\n10. FORBIDDEN PHRASES (and their equivalents in {{ $('Config').first().json.language }}): {{ ($('Config').first().json.banned_phrases || []).map(p => '\"' + p + '\"').join(', ') }}.\n11. Paragraphs have at most 4 sentences. Break long blocks of text into lists, tables or subheadings.\n\nSTRUCTURE (adapt to the format)\n<p>Introduction: 2-3 short paragraphs, direct answer + why it matters.</p>\n<h2 id=\"toc\">\"Table of contents\", written in {{ $('Config').first().json.language }}</h2> — a <ul> with anchor links to the h2 sections (give every h2 a short ASCII id: <h2 id=\"setup\">).\n4-6 main h2 sections (headings match search intent and contain a question or the keyword where possible), h3 where needed.\n<h2>\"Frequently asked questions\", written in {{ $('Config').first().json.language }}</h2>\n<h2>\"Conclusion\", written in {{ $('Config').first().json.language }}</h2> — 1-2 paragraph summary and a clear next step.\n\nHTML RULES\n- NO Markdown, HTML only. Do not use h1.\n- Code: <pre><code class=\"language-X\">...</code></pre>; escape <, >, & inside code as &lt; &gt; &amp;.\n- Lists <ul>/<ol>, emphasis <strong>/<em>, tables <table><thead>...</thead><tbody>...</tbody></table>, important warnings <blockquote>.\n\nOUTPUT FORMAT — only valid JSON (NO code fence, NO explanation):\n{\n  \"title\": \"45-70 characters; focus keyword in the first half of the title; clear benefit; no invented numbers\",\n  \"excerpt\": \"140-160 character meta description; contains the focus keyword and invites the click\",\n  \"slug\": \"3-6 words, lowercase, ASCII, hyphen-separated (e.g. docker-compose-tutorial)\",\n  \"tags\": [\"3-5 readable tags in their natural spelling (e.g. \\\"Claude Code\\\", \\\"Docker\\\", \\\"PostgreSQL\\\") — not slug format\"],\n  \"content\": \"the full HTML content\"\n}\n- Your reply starts with { and ends with }. Escape double quotes inside content as \\\" and line breaks as \\n.",
+        "batching": {}
+      },
+      "id": "aec2778c-056b-4aaa-a1d8-18900d7368f9",
+      "name": "Generate Content",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        800,
+        440
+      ],
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "modelName": "=models/{{ $('Config').first().json.model_writer }}",
+        "options": {
+          "maxOutputTokens": 32000,
+          "temperature": 0.6
+        }
+      },
+      "id": "b1806a64-8d0b-45ce-90dc-69c61b888e01",
+      "name": "Gemini Pro (Content)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        864,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// NUMBER CHECK\n// Finds numeric claims in the draft (percentages, durations, multipliers, thousands-formatted numbers)\n// whose digits do NOT appear anywhere in the research brief. The editor gets this list and must\n// remove them or rephrase them qualitatively. Code blocks are ignored.\n// Units cover English and Turkish: 40% / %40, 120 ms / milliseconds / milisaniye, seconds / saniye,\n// 3x / 3 times / 3 kat, percent, 10,000 / 10.000. Extend the regex for other languages.\nconst brief = String($('Extract Brief').first().json.brief || '');\nconst txt = String($json.text || '');\nconst digits = n => String(n).replace(/[^\\d]/g, '');\nconst briefDigits = new Set((brief.match(/\\d+(?:[.,]\\d+)*/g) || []).map(digits));\nconst body = txt.replace(/<pre[\\s\\S]*?<\\/pre>/gi, ' ').replace(/<code[\\s\\S]*?<\\/code>/gi, ' ');\nconst re = /%\\s?\\d+(?:[.,]\\d+)?|\\d+(?:[.,]\\d+)?\\s?%|\\d+(?:[.,]\\d+)?\\s?(?:ms|milliseconds?|milisaniye|seconds?|saniye|percent|per\\s?cent|times|kat|x)\\b|(?<![\\d.])\\d{1,3}(?:\\.\\d{3})+(?![\\d.]*\\d)|(?<![\\d,])\\d{1,3}(?:,\\d{3})+(?![\\d,]*\\d)/gi;\nconst unsourced = [...new Set((body.match(re) || []).filter(m => !briefDigits.has(digits(m.match(/\\d+(?:[.,]\\d+)*/)[0]))))];\nreturn [{ json: { text: txt, unsourced_numbers: unsourced } }];\n"
+      },
+      "id": "e2f35041-3e4e-402a-b38c-10f4efa63500",
+      "name": "Number Check",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1152,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a meticulous technical editor. Get the blog draft below ready for publication. The article is written in {{ $('Config').first().json.language }}. Your output is pure JSON.\n\nFOCUS KEYWORD: {{ $('Pick Topic').first().json.focus_keyword }}\nSECONDARY KEYWORDS: {{ $('Pick Topic').first().json.secondary_keywords.join(', ') }}\n\nRESEARCH BRIEF (accuracy reference)\n{{ $('Extract Brief').first().json.brief }}\n\nUNSOURCED NUMERIC CLAIMS (automatic check: these do NOT appear in the brief — remove each one from the text or turn it into a qualitative statement without numbers; if it is in a table cell, remove the row)\n{{ $json.unsourced_numbers.length ? $json.unsourced_numbers.join(' | ') : '(none)' }}\n\nDRAFT (JSON)\n{{ $('Generate Content').first().json.text }}\n\nEDITOR CHECKLIST — apply every item:\n1. ACCURACY: clean up the unsourced numeric claims above. Every percentage, duration and ratio in the text must appear verbatim in the brief. Fix or remove any version, date, statistic, benchmark or company story that contradicts the brief or has no basis in it. Check syntax, API/command names and HTML escaping in the code examples; fix them if they are wrong.\n2. SEARCH INTENT: the focus keyword appears in the title, the first paragraph and at least one h2. The introduction answers the reader's question directly in its first 2-3 sentences. Title 45-70 characters, excerpt 140-160 characters.\n3. DEPTH: strengthen shallow sections with a concrete example, step or decision criterion. Delete repetitive and filler sentences.\n4. READABILITY: paragraphs have at most 4 sentences; turn long blocks into lists/tables. Table-of-contents links match the h2 ids.\n5. STYLE: remove AI-sounding phrases ({{ ($('Config').first().json.banned_phrases || []).map(p => '\"' + p + '\"').join(', ') }}) and invented personal experiences. Natural, clear, expert {{ $('Config').first().json.language }}.\n6. LINKS: keep the existing internal and external links; do not invent new URLs.\n7. Do NOT shorten the text; return the improved FULL text ({{ $('Config').first().json.target_words_min }}-{{ $('Config').first().json.target_words_max }} words).\n\nOUTPUT: same schema as the draft, only valid JSON (NO code fence, NO explanation):\n{\"title\":\"...\",\"excerpt\":\"...\",\"slug\":\"...\",\"tags\":[\"...\"],\"content\":\"...\"}\nYour reply starts with { and ends with }.",
+        "batching": {}
+      },
+      "id": "911494f8-eaef-4374-8e51-145ed2a5e0ad",
+      "name": "Editor Revision",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        1376,
+        440
+      ],
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "modelName": "=models/{{ $('Config').first().json.model_writer }}",
+        "options": {
+          "maxOutputTokens": 32000,
+          "temperature": 0.6
+        }
+      },
+      "id": "f78fd34e-ed94-4614-b5bc-3fd4509ac516",
+      "name": "Gemini Pro (Editor)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// QUALITY GATE\n// 1) Try the editor's version. 2) If it fails any check, fall back to the original draft.\n// 3) If neither passes, stop the run with a clear error — nothing gets published.\nconst C = $('Config').first().json;\nconst locale = C.locale || 'en-US';\nconst minWords = Number(C.gate_min_words) || 1200;\n\nconst parse = (txt) => {\n  let r = String(txt || '').replace(/^\\s*```(?:json)?\\s*|\\s*```\\s*$/gi, '').trim();\n  const a = r.indexOf('{'), b = r.lastIndexOf('}');\n  if (a < 0 || b <= a) return null;\n  try { return JSON.parse(r.slice(a, b + 1)); } catch (e) { return null; }\n};\n\n// Same logic as \"Number Check\": numbers in the final text must exist in the research brief.\nconst brief = String($('Extract Brief').first().json.brief || '');\nconst digits = n => String(n).replace(/[^\\d]/g, '');\nconst briefDigits = new Set((brief.match(/\\d+(?:[.,]\\d+)*/g) || []).map(digits));\nconst unsourced = (html) => {\n  const body = html.replace(/<pre[\\s\\S]*?<\\/pre>/gi, ' ').replace(/<code[\\s\\S]*?<\\/code>/gi, ' ');\n  const re = /%\\s?\\d+(?:[.,]\\d+)?|\\d+(?:[.,]\\d+)?\\s?%|\\d+(?:[.,]\\d+)?\\s?(?:ms|milliseconds?|milisaniye|seconds?|saniye|percent|per\\s?cent|times|kat|x)\\b|(?<![\\d.])\\d{1,3}(?:\\.\\d{3})+(?![\\d.]*\\d)|(?<![\\d,])\\d{1,3}(?:,\\d{3})+(?![\\d,]*\\d)/gi;\n  return [...new Set((body.match(re) || []).filter(m => !briefDigits.has(digits(m.match(/\\d+(?:[.,]\\d+)*/)[0]))))];\n};\n\nconst escRe = s => String(s).replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&');\nconst fakeList = (C.fake_experience_patterns || []).filter(Boolean).map(escRe);\nconst fakeRe = fakeList.length ? new RegExp(fakeList.join('|'), 'i') : null;\n\nconst check = (x) => {\n  const t = String(x.title || '').trim(), e = String(x.excerpt || '').trim(), h = String(x.content || '').trim();\n  const words = h.replace(/<pre[\\s\\S]*?<\\/pre>/gi, ' ').replace(/<[^>]+>/g, ' ').split(/\\s+/).filter(Boolean).length;\n  if (t.length < 30 || t.length > 95) return 'title length ' + t.length;\n  if (e.length < 110 || e.length > 200) return 'excerpt length ' + e.length;\n  if (words < minWords) return 'content too short (' + words + ' words)';\n  if (/parse\\s*(?:error|hatası)|title could not be (?:set|generated)|başlık atanamadı|content is empty|içerik boş/i.test(t + ' ' + e + ' ' + h)) return 'fallback text';\n  if (C.require_code_example !== false && !/<pre><code\\b/i.test(h)) return 'no code example';\n  if ((h.match(/<h2\\b/gi) || []).length < 4) return 'too few h2 sections';\n  if (/<(script|style|iframe|form|object|embed)\\b/i.test(h)) return 'unsafe HTML';\n  if (fakeRe && fakeRe.test(h)) return 'invented personal experience';\n  const ks = unsourced(h + ' ' + t);\n  if (ks.length) return 'unsourced numeric claim: ' + ks.slice(0, 5).join(', ');\n  if (/\\d+\\s*ms(?:'?(?:den|dan)|\\s*(?:to|→|->))\\s*\\d+\\s*ms/i.test(t)) return 'invented metric in title';\n  return '';\n};\n\nconst sel = $('Pick Topic').first().json;\nconst candidates = [['editor', parse($('Editor Revision').first().json.text)], ['draft', parse($('Generate Content').first().json.text)]];\nlet chosen = null, source = '';\nconst errors = [];\nfor (const [name, x] of candidates) {\n  if (!x) { errors.push(name + ': could not parse JSON'); continue; }\n  const err = check(x);\n  if (!err) { chosen = x; source = name; break; }\n  errors.push(name + ': ' + err);\n}\nif (!chosen) throw new Error('Quality gate: ' + errors.join(' | '));\n\nconst h = String(chosen.content).trim().replace(/<\\/?h1\\b[^>]*>/gi, '');\nconst kw = String(sel.focus_keyword || '').toLocaleLowerCase(locale);\nconst warnings = [...errors];\nif (kw && !String(chosen.title).toLocaleLowerCase(locale).includes(kw)) warnings.push('focus keyword not verbatim in title');\nconst linkBase = String(C.public_url_base || C.wp_site_url || '').replace(/\\/+$/, '').toLowerCase();\nconst internalLinkCount = linkBase ? h.toLowerCase().split('href=\"' + linkBase).length - 1 : 0;\nif (internalLinkCount === 0) warnings.push('no internal links');\nconst wordCount = h.replace(/<pre[\\s\\S]*?<\\/pre>/gi, ' ').replace(/<[^>]+>/g, ' ').split(/\\s+/).filter(Boolean).length;\n\n// Short, ASCII, keyword-based slug. Used only if it has at least 8 characters; otherwise WordPress derives one from the title.\nconst charMap = { 'ç': 'c', 'ğ': 'g', 'ı': 'i', 'ö': 'o', 'ş': 's', 'ü': 'u', 'â': 'a', 'î': 'i', 'û': 'u', 'ß': 'ss', 'æ': 'ae', 'ø': 'o', 'đ': 'd', 'ł': 'l' };\nconst slugify = s => String(s || '').toLocaleLowerCase(locale).replace(/[çğıöşüâîûßæøđł]/g, ch => charMap[ch])\n  .normalize('NFKD').replace(/[\\u0300-\\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')\n  .split('-').filter(Boolean).slice(0, 7).join('-');\nconst slug = slugify(chosen.slug || sel.focus_keyword || '');\n\nreturn [{ json: {\n  title: String(chosen.title).trim(),\n  excerpt: String(chosen.excerpt).trim(),\n  content: h,\n  slug: slug.length >= 8 ? slug : '',\n  tags: Array.isArray(chosen.tags) ? chosen.tags.map(String).slice(0, 5) : [],\n  status: C.post_status || 'publish',\n  focus_keyword: sel.focus_keyword,\n  source,\n  word_count: wordCount,\n  internal_link_count: internalLinkCount,\n  warnings,\n  quality_gate: 'passed'\n} }];\n"
+      },
+      "id": "db04b8a7-064e-4ac0-ac14-f5b04825a60a",
+      "name": "Quality Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1728,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Hand the cover image (generated earlier in the run) to \"Cover Image to File\", with an SEO-friendly file name.\nconst img = $('Extract Image Base64').first().json;\nconst q = $('Quality Gate').first().json;\nconst base = q.slug || 'cover';\nreturn [{ json: {\n  image_base64: img.image_base64,\n  image_mime: img.image_mime,\n  image_filename: `${base}-${Date.now()}.${img.image_ext || 'png'}`,\n  alt_text: q.title\n} }];\n"
+      },
+      "id": "0d185fca-de25-443c-a9c7-7f3115e6060c",
+      "name": "Prepare Cover File",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        1100
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "image_base64",
+        "binaryPropertyName": "data",
+        "options": {
+          "fileName": "={{ $json.image_filename }}",
+          "mimeType": "={{ $json.image_mime }}"
+        }
+      },
+      "id": "ced05bea-1d6b-412f-a7ef-ea014799db73",
+      "name": "Cover Image to File",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        1100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ String($('Config').first().json.wp_site_url || '').replace(/\\/+$/, '') }}/wp-json/wp/v2/media",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "alt_text",
+              "value": "={{ $('Prepare Cover File').first().json.alt_text }}"
+            },
+            {
+              "name": "title",
+              "value": "={{ $('Prepare Cover File').first().json.alt_text }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Disposition",
+              "value": "=attachment; filename=\"{{ $('Prepare Cover File').first().json.image_filename }}\""
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "id": "ddc4b359-70f8-4464-970c-6956fcee8cd2",
+      "name": "Upload Featured Image",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        448,
+        1100
+      ],
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// One item per tag -> \"Get or Create Tag\" resolves each name to a WordPress tag ID.\n// Falls back to the focus keyword so there is always at least one item.\nconst q = $('Quality Gate').first().json;\nconst seen = new Set();\nconst names = [];\nfor (const t of (q.tags || [])) {\n  const name = String(t).trim().slice(0, 40);\n  const key = name.toLowerCase();\n  if (name && !seen.has(key)) { seen.add(key); names.push(name); }\n}\nif (!names.length && q.focus_keyword) names.push(String(q.focus_keyword).trim().slice(0, 40));\nreturn names.map(name => ({ json: { name } }));\n"
+      },
+      "id": "778bab7e-634f-4224-b845-09df063ab4c6",
+      "name": "Prepare Tags",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        1100
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ String($('Config').first().json.wp_site_url || '').replace(/\\/+$/, '') }}/wp-json/wp/v2/tags",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { name: $json.name } }}",
+        "options": {
+          "timeout": 20000,
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "e331e731-82ce-4398-87c4-9fc34ebf6410",
+      "name": "Get or Create Tag",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        896,
+        1100
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Collect tag IDs + featured image ID and build the WordPress post body.\n// Tag or image problems never block publishing; they show up as warnings in the report mail.\nconst C = $('Config').first().json;\nconst q = $('Quality Gate').first().json;\nconst warnings = [...(q.warnings || [])];\n\nconst tagIds = [];\nfor (const it of $('Get or Create Tag').all()) {\n  const j = it.json || {};\n  // New tag -> { id }. Existing tag -> WordPress answers 400 \"term_exists\" with data.term_id.\n  const id = Number(j.id) || Number(j.data?.term_id) || 0;\n  if (id && !tagIds.includes(id)) tagIds.push(id);\n}\nif (!tagIds.length) warnings.push('tags could not be created or resolved');\n\nconst media = $('Upload Featured Image').first().json || {};\nconst mediaId = Number(media.id) || 0;\nif (!mediaId) warnings.push('featured image upload failed: ' + JSON.stringify(media.error || media).slice(0, 300));\n\nconst payload = { title: q.title, content: q.content, excerpt: q.excerpt, status: q.status };\nif (mediaId) payload.featured_media = mediaId;\nif (q.slug) payload.slug = q.slug;\nif (tagIds.length) payload.tags = tagIds;\nconst cats = (Array.isArray(C.wp_category_ids) ? C.wp_category_ids : []).map(Number).filter(n => n > 0);\nif (cats.length) payload.categories = cats;\n\nreturn [{ json: { payload, tag_ids: tagIds, media_id: mediaId, media_url: media.source_url || '', warnings } }];\n"
+      },
+      "id": "d8cc7cb4-198c-4f84-bec1-376b2d2448d1",
+      "name": "Build Post Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        1100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ String($('Config').first().json.wp_site_url || '').replace(/\\/+$/, '') }}/wp-json/wp/v2/posts",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.payload }}",
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "id": "6d192b35-e6f8-4295-b9aa-366e0f795949",
+      "name": "Create Post",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1344,
+        1100
+      ],
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "69b23ec5-6479-4ffd-8098-73e8375fc10c",
+              "leftValue": "={{ Number($json.id) > 0 && !$json.error }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "de93dd5d-23d5-4e92-89ce-7209d11dfc79",
+      "name": "If Success",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1568,
+        1100
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "845fb658-1688-4083-a9ad-0416c2ce7e76",
+              "leftValue": "={{ String($('Config').first().json.deploy_hook_url || '').trim() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c1dd499a-01dc-48fb-86cd-aa36cc4c2f5f",
+      "name": "Deploy Hook Set?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1792,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ String($('Config').first().json.deploy_hook_url).trim() }}",
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "aaa7f7e5-531d-4a49-a678-dffe36d3ea17",
+      "name": "Trigger Deploy Hook",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2016,
+        880
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// WordPress link -> public URL (differs on headless setups). Google Indexing API and IndexNow use the public URL.\nconst C = $('Config').first().json;\nconst post = $('Create Post').first().json;\nconst rawUrl = post.link || '';\nconst wpBase = String(C.wp_site_url || '').replace(/\\/+$/, '');\nconst pubBase = String(C.public_url_base || '').replace(/\\/+$/, '');\nlet publicUrl = rawUrl;\nif (rawUrl && wpBase && pubBase && rawUrl.indexOf(wpBase) === 0) {\n  publicUrl = pubBase + rawUrl.substring(wpBase.length);\n}\nconst host = (publicUrl.match(/^https?:\\/\\/([^/?#]+)/i) || [])[1] || '';\nconst key = String(C.indexnow_key || '').trim();\nconst keyLocation = String(C.indexnow_key_location || '').trim() || (host && key ? `https://${host}/${key}.txt` : '');\n\nreturn [{ json: {\n  public_url: publicUrl,\n  raw_wp_url: rawUrl,\n  post_id: post.id,\n  post_status: post.status,\n  slug: post.slug,\n  is_public: post.status === 'publish',\n  indexnow_host: host,\n  indexnow_key_location: keyLocation\n} }];\n"
+      },
+      "id": "410079ab-6351-484c-bae3-75b73c32324b",
+      "name": "Compute Public URL",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2240,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c32f4935-551a-4f65-82a3-507e72217969",
+              "leftValue": "={{ $('Config').first().json.google_indexing_enabled === true && $json.is_public === true }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "44072e35-3dec-49ef-b79c-3cfa31e7e764",
+      "name": "Google Indexing Enabled?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2464,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://indexing.googleapis.com/v3/urlNotifications:publish",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { url: $('Compute Public URL').first().json.public_url, type: 'URL_UPDATED' } }}",
+        "options": {
+          "timeout": 20000,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "582b0fdd-0918-4835-a0ae-17f73488a0aa",
+      "name": "Google Indexing API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2688,
+        880
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b80484e5-9357-474f-9cf0-7138e815ec2d",
+              "leftValue": "={{ String($('Config').first().json.indexnow_key || '').trim() !== '' && $('Compute Public URL').first().json.is_public === true }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c8878898-b380-46db-87b3-40cca9968d5d",
+      "name": "IndexNow Enabled?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2912,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.indexnow.org/indexnow",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\n  host: $('Compute Public URL').first().json.indexnow_host,\n  key: String($('Config').first().json.indexnow_key).trim(),\n  keyLocation: $('Compute Public URL').first().json.indexnow_key_location,\n  urlList: [$('Compute Public URL').first().json.public_url]\n} }}",
+        "options": {
+          "timeout": 15000,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "b6a56eb8-4894-4174-9a06-c722192904d7",
+      "name": "IndexNow",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        3136,
+        880
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Build the success mail (subject + HTML). Optional steps that did not run are reported as \"skipped\".\nconst q = $('Quality Gate').first().json;\nconst t = $('Pick Topic').first().json;\nconst b = $('Extract Brief').first().json;\nconst p = $('Build Post Payload').first().json;\nconst u = $('Compute Public URL').first().json;\n// Optional nodes may not have run in this execution: referencing them must never break the report.\nconst ran = (name) => {\n  try {\n    if ($(name).isExecuted === false) return null;\n    return $(name).first()?.json || null;\n  } catch (e) { return null; }\n};\nconst esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\nconst errText = (j) => typeof j.error === 'string' ? j.error : (j.error?.message || JSON.stringify(j.error || j.body || '').slice(0, 200));\nconst status = (j, okCodes) => {\n  if (!j) return 'skipped (disabled or post not public)';\n  if (j.error) return '❌ FAIL — ' + esc(errText(j));\n  return okCodes(j.statusCode) ? `✅ OK (HTTP ${j.statusCode})` : `❌ FAIL — HTTP ${j.statusCode} ${esc(JSON.stringify(j.body || '').slice(0, 200))}`;\n};\nconst ok2xx = c => c >= 200 && c < 300;\nconst deploy = ran('Trigger Deploy Hook');\n\nconst html = `<h2>${esc(q.title)}</h2>\n<p><strong>Post URL:</strong> <a href=\"${esc(u.public_url)}\">${esc(u.public_url)}</a> (status: ${esc(u.post_status)})</p>\n<p><strong>Focus keyword:</strong> ${esc(t.focus_keyword)} — demand score ${t.demand.score}</p>\n<p><strong>Why now:</strong> ${esc(t.why_now)}</p>\n<p><strong>Format:</strong> ${esc(t.format_name)} · <strong>Words:</strong> ${q.word_count} · <strong>Internal links:</strong> ${q.internal_link_count} · <strong>Text source:</strong> ${esc(q.source)}</p>\n<p><strong>Excerpt:</strong> ${esc(q.excerpt)}</p>\n<p><strong>Slug / tags:</strong> ${esc(u.slug)} · ${p.tag_ids.length} tag(s) · featured image: ${p.media_id ? '✅' : '❌'}</p>\n<p><strong>Warnings:</strong> ${esc(p.warnings.join(' | ') || 'none')}</p>\n<p><strong>Research sources:</strong> ${esc((b.source_domains || []).join(', '))}</p>\n<h3>Topic candidates</h3>\n<pre>${esc(t.candidates_summary)}</pre>\n<hr>\n<h3>Indexing</h3>\n<p><strong>Deploy hook:</strong> ${deploy ? (deploy.error ? '❌ FAIL — ' + esc(errText(deploy)) : '✅ triggered') : 'skipped'}</p>\n<p><strong>Google Indexing API:</strong> ${status(ran('Google Indexing API'), ok2xx)}</p>\n<p><strong>IndexNow:</strong> ${status(ran('IndexNow'), c => c === 200 || c === 202)}</p>`;\n\nreturn [{ json: { subject: 'Post published: ' + q.title, html } }];\n"
+      },
+      "id": "c0fa5ba6-4ca5-4553-aa9f-34a2ab980170",
+      "name": "Build Success Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3360,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $('Config').first().json.mail_from }}",
+        "toEmail": "={{ $('Config').first().json.mail_to }}",
+        "subject": "={{ $json.subject }}",
+        "html": "={{ $json.html }}",
+        "options": {}
+      },
+      "id": "a0bde7a4-fb4f-4ab9-a52b-c03ca3ce2157",
+      "name": "Send Success Mail",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        3584,
+        1000
+      ],
+      "webhookId": "cf8d12a5-ec7b-431a-b898-63c6383a3644"
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $('Config').first().json.mail_from }}",
+        "toEmail": "={{ $('Config').first().json.mail_to }}",
+        "subject": "=Blog post was NOT published: {{ $('Quality Gate').first().json.title }}",
+        "html": "=The post could not be created in WordPress.<br><br>Title: {{ $('Quality Gate').first().json.title }}<br>Category: {{ $('Category + Format Rotation').first().json.category_name }}<br>Format: {{ $('Pick Topic').first().json.format_name }}<br>Featured image upload: {{ $('Build Post Payload').first().json.media_id ? 'OK (media ' + $('Build Post Payload').first().json.media_id + ')' : 'failed' }}<br>WordPress response: {{ JSON.stringify($('Create Post').first().json).slice(0, 3000) }}",
+        "options": {}
+      },
+      "id": "4a394066-eed6-496f-8365-02b51cea7cf0",
+      "name": "Send Fail Mail",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1792,
+        1240
+      ],
+      "webhookId": "dfcd1c32-d819-4b79-b7a5-f5aa35b880b1"
+    },
+    {
+      "parameters": {
+        "content": "## Grounded Blog Writer — setup\n**1. Credentials** (open each node with a warning):\n- **Google Gemini(PaLM) API** → 3 Gemini model nodes + 3 Gemini HTTP nodes\n- **Basic Auth** = WordPress username + *Application Password* → Fetch Last 50 Posts, Upload Featured Image, Get or Create Tag, Create Post\n- **SMTP** → both mail nodes\n- *optional* **Google Service Account API** with \"Set up for use in HTTP Request node\" ON and scope `https://www.googleapis.com/auth/indexing` → Google Indexing API\n\n**2. Edit `Config`**: site URL, language, audience, categories, formats, models, mail.\n\n**3. Test**: set `post_status` to `draft`, run once, read the mail + the draft. Then switch to `publish` and activate.\n\nRuns **Tuesday 06:00** in the workflow timezone (Settings → Timezone or `GENERIC_TIMEZONE`).",
+        "height": 1560,
+        "width": 500
+      },
+      "id": "bce3cd0d-868e-4abf-8de4-6d7796b80fa9",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 1 · Research\nLast 50 posts → category/format rotation + overused-tech blacklist → trend signals (HN, dev.to, GitHub, Reddit) → 6 **Google-grounded** topic candidates → **Google Autocomplete demand score** + overlap check → grounded **research brief**",
+        "height": 340,
+        "width": 2120,
+        "color": 7
+      },
+      "id": "ade4f225-2041-4e91-96e3-67c7cccd54a5",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 2 · Write\nCover image prompt + image → draft → **Number Check** (numbers that are not in the brief) → editor pass → **Quality Gate** (editor version, else draft, else stop — nothing is published)",
+        "height": 520,
+        "width": 2000,
+        "color": 5
+      },
+      "id": "0759b1d9-c28a-47cc-b8a9-9e54dd0e47fe",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 3 · Publish & index\nUpload cover (alt text) → get/create tags → create post (slug, tags, featured image) → optional deploy hook → Google Indexing API (optional) → IndexNow (optional) → report mail. Tag/image failures only produce warnings; a failed post creation sends the fail mail.",
+        "height": 580,
+        "width": 3800,
+        "color": 4
+      },
+      "id": "23a3615d-71c9-44fb-8ff8-e1dfcb54e2cd",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        820
+      ]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config": {
+      "main": [
+        [
+          {
+            "node": "Fetch Last 50 Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Last 50 Posts": {
+      "main": [
+        [
+          {
+            "node": "Category + Format Rotation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Category + Format Rotation": {
+      "main": [
+        [
+          {
+            "node": "Trend Signals",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trend Signals": {
+      "main": [
+        [
+          {
+            "node": "Build Topic Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Topic Prompt": {
+      "main": [
+        [
+          {
+            "node": "Topic Candidates (Grounded)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Topic Candidates (Grounded)": {
+      "main": [
+        [
+          {
+            "node": "Pick Topic",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pick Topic": {
+      "main": [
+        [
+          {
+            "node": "Research Brief (Grounded)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Research Brief (Grounded)": {
+      "main": [
+        [
+          {
+            "node": "Extract Brief",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Brief": {
+      "main": [
+        [
+          {
+            "node": "Write Image Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Image Prompt": {
+      "main": [
+        [
+          {
+            "node": "Generate Cover Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Cover Image": {
+      "main": [
+        [
+          {
+            "node": "Extract Image Base64",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Image Base64": {
+      "main": [
+        [
+          {
+            "node": "Generate Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Content": {
+      "main": [
+        [
+          {
+            "node": "Number Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Number Check": {
+      "main": [
+        [
+          {
+            "node": "Editor Revision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Editor Revision": {
+      "main": [
+        [
+          {
+            "node": "Quality Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Quality Gate": {
+      "main": [
+        [
+          {
+            "node": "Prepare Cover File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Cover File": {
+      "main": [
+        [
+          {
+            "node": "Cover Image to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cover Image to File": {
+      "main": [
+        [
+          {
+            "node": "Upload Featured Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Featured Image": {
+      "main": [
+        [
+          {
+            "node": "Prepare Tags",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Tags": {
+      "main": [
+        [
+          {
+            "node": "Get or Create Tag",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get or Create Tag": {
+      "main": [
+        [
+          {
+            "node": "Build Post Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Post Payload": {
+      "main": [
+        [
+          {
+            "node": "Create Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Post": {
+      "main": [
+        [
+          {
+            "node": "If Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Success": {
+      "main": [
+        [
+          {
+            "node": "Deploy Hook Set?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Fail Mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deploy Hook Set?": {
+      "main": [
+        [
+          {
+            "node": "Trigger Deploy Hook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Compute Public URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger Deploy Hook": {
+      "main": [
+        [
+          {
+            "node": "Compute Public URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compute Public URL": {
+      "main": [
+        [
+          {
+            "node": "Google Indexing Enabled?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Indexing Enabled?": {
+      "main": [
+        [
+          {
+            "node": "Google Indexing API",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IndexNow Enabled?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Indexing API": {
+      "main": [
+        [
+          {
+            "node": "IndexNow Enabled?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IndexNow Enabled?": {
+      "main": [
+        [
+          {
+            "node": "IndexNow",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Build Success Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IndexNow": {
+      "main": [
+        [
+          {
+            "node": "Build Success Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Success Report": {
+      "main": [
+        [
+          {
+            "node": "Send Success Mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini Flash (Image Prompt)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Write Image Prompt",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini Pro (Content)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate Content",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini Pro (Editor)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Editor Revision",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  }
+}

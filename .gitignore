@@ -1,0 +1,12 @@
+# Local secrets / personal copies of the workflow or config
+.env
+.env.*
+*.local.json
+*.local.*
+
+# Tooling
+node_modules/
+*.log
+.DS_Store
+.idea/
+.vscode/

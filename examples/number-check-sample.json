@@ -1,0 +1,4 @@
+{
+  "brief": "1. CURRENT STATE\n- PostgreSQL 17 was released on 2024-09-26.\n2. DATA\n- Vendor benchmark (source: vendor blog): index-only scans were 3x faster on the test dataset.\n- Developer survey (source: survey report): 10,000 respondents, 62% use PostgreSQL.",
+  "draft": "<p>Covering indexes made queries 3x faster and cut p99 latency by 45% to 120 ms.</p>\n<p>According to a survey of 10.000 developers, 62 percent already use it, and teams report a 7 times smaller I/O footprint.</p>\n<pre><code>-- numbers inside code blocks are ignored: 999 ms, 80%\nCREATE INDEX orders_cover ON orders (customer_id) INCLUDE (total);</code></pre>"
+}

@@ -1,0 +1,535 @@
+{
+  "name": "WP Indexer Smart (only non-indexed URLs)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "2149702d-8893-4fde-b2e3-8df116901b89",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"wp_site_url\": \"https://your-site.example.com\",\n  \"public_url_base\": \"\",\n  \"search_console_property\": \"sc-domain:your-site.example.com\",\n  \"max_inspect_per_run\": 200,\n  \"indexnow_key\": \"\",\n  \"indexnow_key_location\": \"\",\n  \"mail_from\": \"blog-bot@example.com\",\n  \"mail_to\": \"you@example.com\"\n}",
+        "options": {}
+      },
+      "id": "209e289b-7862-413d-9f4f-d287ddeda649",
+      "name": "Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ String($('Config').first().json.wp_site_url || '').replace(/\\/+$/, '') }}/wp-json/wp/v2/posts",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "per_page",
+              "value": "100"
+            },
+            {
+              "name": "status",
+              "value": "publish"
+            },
+            {
+              "name": "_fields",
+              "value": "id,link,date,title"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          },
+          "pagination": {
+            "pagination": {
+              "parameters": {
+                "parameters": [
+                  {
+                    "name": "page",
+                    "value": "={{ $pageCount + 1 }}"
+                  }
+                ]
+              },
+              "paginationCompleteWhen": "receiveSpecificStatusCodes",
+              "statusCodesWhenComplete": "400"
+            }
+          }
+        }
+      },
+      "id": "ed3bb374-03a7-49ed-a906-741d15d5121c",
+      "name": "Fetch All Posts",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        448,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Build the public URL list (newest first, capped at max_inspect_per_run).\nconst C = $('Config').first().json;\nconst wp = String(C.wp_site_url || '').replace(/\\/+$/, '');\nconst pub = String(C.public_url_base || '').replace(/\\/+$/, '');\nconst maxUrls = Number(C.max_inspect_per_run) || 200;\nconst key = String(C.indexnow_key || '').trim();\n\nconst all = [];\nfor (const it of $input.all()) {\n  const j = it.json || {};\n  const raw = j.link || '';\n  if (!raw) continue;\n  const publicUrl = (wp && pub && raw.indexOf(wp) === 0) ? pub + raw.substring(wp.length) : raw;\n  const host = (publicUrl.match(/^https?:\\/\\/([^/?#]+)/i) || [])[1] || '';\n  all.push({\n    id: j.id,\n    title: (j.title && (j.title.rendered || j.title)) || '',\n    date: j.date || '',\n    raw_url: raw,\n    public_url: publicUrl,\n    indexnow_host: host,\n    indexnow_key_location: String(C.indexnow_key_location || '').trim() || (host && key ? `https://${host}/${key}.txt` : '')\n  });\n}\n\n// Newest first\nall.sort((a, b) => (b.date || '').localeCompare(a.date || ''));\nreturn all.slice(0, maxUrls).map(item => ({ json: item }));\n"
+      },
+      "id": "664764f9-2b01-4411-b62a-fbcc83bc3e7c",
+      "name": "Build URL List",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "f8360ac7-a5d0-45a5-b4b5-7eed952a0cae",
+      "name": "Loop Over URLs",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        896,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://searchconsole.googleapis.com/v1/urlInspection/index:inspect",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { inspectionUrl: $json.public_url, siteUrl: $('Config').first().json.search_console_property } }}",
+        "options": {
+          "timeout": 30000,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "4ef97147-4dc0-4b89-b705-d6c49ffc8b28",
+      "name": "Inspect URL",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1120,
+        460
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Per URL: already indexed (PASS / PARTIAL) -> skip. Not indexed -> send to Google Indexing API (+ IndexNow).\n// Inspection errors never trigger an indexing request.\nconst url = $('Loop Over URLs').item.json;\nconst r = $json;\nlet body = r.body;\nif (typeof body === 'string') { try { body = JSON.parse(body); } catch (e) { /* keep string */ } }\n\nif (r.error || !(r.statusCode >= 200 && r.statusCode < 300)) {\n  const msg = r.error ? (typeof r.error === 'string' ? r.error : (r.error.message || JSON.stringify(r.error))) : 'Inspection API failed';\n  return { json: { ...url, inspected: false, needs_indexing: false, error: msg, inspection_status: r.statusCode || null, inspection_detail: body || null } };\n}\n\nconst idx = (body && body.inspectionResult && body.inspectionResult.indexStatusResult) || {};\nconst verdict = idx.verdict || 'UNKNOWN';\nconst isIndexed = verdict === 'PASS' || verdict === 'PARTIAL';\nreturn { json: {\n  ...url,\n  inspected: true,\n  is_indexed: isIndexed,\n  needs_indexing: !isIndexed,\n  verdict,\n  coverage_state: idx.coverageState || '',\n  last_crawl: idx.lastCrawlTime || null,\n  action: isIndexed ? 'skipped_already_indexed' : 'to_index'\n} };\n"
+      },
+      "id": "693cc299-9c4d-47a9-bc34-eac981845a61",
+      "name": "Evaluate Inspection",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "8cea0efe-e03b-4a13-8296-198a726dfe70",
+              "leftValue": "={{ $json.needs_indexing === true }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a4c6e02d-ef85-430b-a60e-b595ae4001b0",
+      "name": "Needs Indexing?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1568,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://indexing.googleapis.com/v3/urlNotifications:publish",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { url: $json.public_url, type: 'URL_UPDATED' } }}",
+        "options": {
+          "timeout": 20000,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "ac31b073-0654-4944-818d-414aa3415efe",
+      "name": "Google Indexing API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1792,
+        360
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ef0de31d-bd40-466d-b49a-926d295c58f3",
+              "leftValue": "={{ String($('Config').first().json.indexnow_key || '').trim() !== '' }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "6b98dc9f-33d1-456f-95eb-2fcb6ba627c2",
+      "name": "IndexNow Enabled?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2016,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.indexnow.org/indexnow",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\n  host: $('Evaluate Inspection').item.json.indexnow_host,\n  key: String($('Config').first().json.indexnow_key).trim(),\n  keyLocation: $('Evaluate Inspection').item.json.indexnow_key_location,\n  urlList: [$('Evaluate Inspection').item.json.public_url]\n} }}",
+        "options": {
+          "timeout": 15000,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "3e183736-c906-4e08-b218-4f8d8ce36dd4",
+      "name": "IndexNow",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2240,
+        260
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Merge the Google Indexing API (and optional IndexNow) result into the URL record.\nconst base = $('Evaluate Inspection').item.json;\nconst g = $('Google Indexing API').item.json;\nconst googleOk = !g.error && g.statusCode >= 200 && g.statusCode < 300;\nconst indexnowOn = String($('Config').first().json.indexnow_key || '').trim() !== '';\nlet indexnowOk = null, indexnowStatus = null;\nif (indexnowOn) {\n  // When IndexNow is enabled this item comes from the IndexNow node.\n  indexnowStatus = $json.statusCode || null;\n  indexnowOk = !$json.error && ($json.statusCode === 200 || $json.statusCode === 202);\n}\nreturn { json: {\n  ...base,\n  action: 'indexed',\n  google_ok: googleOk,\n  google_status: g.statusCode || null,\n  google_response: g.body || g.error || null,\n  indexnow_ok: indexnowOk,\n  indexnow_status: indexnowStatus\n} };\n"
+      },
+      "id": "cc9c6923-cce0-4a7d-953f-cd50fa539b13",
+      "name": "Record Index Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2464,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "seconds"
+      },
+      "id": "22060289-2ee4-4e47-bbe7-80e3b9bf975a",
+      "name": "Rate Limit (1s)",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        2688,
+        540
+      ],
+      "webhookId": "c119c44e-573d-433c-80fb-b80fa045b38b"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Aggregate all results for the report mail.\nconst items = $input.all().map(it => it.json);\nconst total = items.length;\nconst alreadyIndexed = items.filter(i => i.is_indexed === true).length;\nconst reIndexed = items.filter(i => i.action === 'indexed' && i.google_ok).length;\nconst indexFailed = items.filter(i => i.action === 'indexed' && !i.google_ok).length;\nconst inspectionFailed = items.filter(i => !i.inspected).length;\n\nconst failures = items\n  .filter(i => !i.is_indexed && (i.error || i.google_ok === false))\n  .slice(0, 30)\n  .map(f => ({\n    url: f.public_url,\n    verdict: f.verdict || 'N/A',\n    coverage: f.coverage_state || '',\n    error: f.error || `Indexing HTTP ${f.google_status}`\n  }));\n\nconst notIndexedSample = items\n  .filter(i => i.is_indexed === false)\n  .slice(0, 20)\n  .map(f => ({\n    url: f.public_url,\n    verdict: f.verdict,\n    coverage: f.coverage_state,\n    action: f.action,\n    google_ok: f.google_ok,\n    indexnow_ok: f.indexnow_ok\n  }));\n\nreturn [{ json: {\n  total,\n  already_indexed: alreadyIndexed,\n  re_indexed: reIndexed,\n  index_failed: indexFailed,\n  inspection_failed: inspectionFailed,\n  failures,\n  not_indexed_sample: notIndexedSample\n} }];\n"
+      },
+      "id": "53fd2398-ff05-449f-800e-bf1535ffcf65",
+      "name": "Summarize Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $('Config').first().json.mail_from }}",
+        "toEmail": "={{ $('Config').first().json.mail_to }}",
+        "subject": "=Smart indexing report — {{ $json.re_indexed }}/{{ $json.total }} URLs sent for indexing",
+        "html": "=<h2>Smart indexing report</h2>\n<p><strong>Run date:</strong> {{ $now.toFormat('dd LLL yyyy HH:mm') }}</p>\n\n<h3>Summary</h3>\n<ul>\n  <li><strong>URLs inspected:</strong> {{ $json.total }}</li>\n  <li><strong>✅ Already indexed (skipped):</strong> {{ $json.already_indexed }}</li>\n  <li><strong>📤 Sent for indexing:</strong> {{ $json.re_indexed }}</li>\n  <li><strong>❌ Indexing request failed:</strong> {{ $json.index_failed }}</li>\n  <li><strong>⚠ Inspection failed:</strong> {{ $json.inspection_failed }}</li>\n</ul>\n\n<h3>Not indexed URLs (first 20)</h3>\n<table border=\"1\" cellpadding=\"5\" cellspacing=\"0\" style=\"border-collapse:collapse;font-size:12px\">\n  <thead><tr><th>URL</th><th>Verdict</th><th>Coverage</th><th>Action</th><th>Google</th><th>IndexNow</th></tr></thead>\n  <tbody>\n    {{ $json.not_indexed_sample.map(r => `<tr><td><a href=\"${r.url}\">${r.url.slice(-60)}</a></td><td>${r.verdict}</td><td>${r.coverage}</td><td>${r.action}</td><td>${r.google_ok ? '✅' : '❌'}</td><td>${r.indexnow_ok === null || r.indexnow_ok === undefined ? '–' : (r.indexnow_ok ? '✅' : '❌')}</td></tr>`).join('') }}\n  </tbody>\n</table>\n\n<hr>\n<h3>Errors (first 30)</h3>\n<ul>\n  {{ $json.failures.map(f => `<li><a href=\"${f.url}\">${f.url}</a> — ${f.verdict} (${f.coverage}) — ${f.error}</li>`).join('') }}\n</ul>\n\n<hr>\n<p style=\"color:#888;font-size:11px\">Google default quotas: URL Inspection API 2,000 requests/day per property; Indexing API 200 publish requests/day. This workflow only spends Indexing API quota on URLs that are not indexed yet.</p>",
+        "options": {}
+      },
+      "id": "740b8529-d7ee-4c9e-96d0-a2fee2ae8582",
+      "name": "Send Report Mail",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1344,
+        120
+      ],
+      "webhookId": "3b2f4d0f-93e5-4b11-b9f0-ebf82a3a39d0"
+    },
+    {
+      "parameters": {
+        "content": "## WP Indexer Smart — setup\nChecks every published post with the **Search Console URL Inspection API** and sends **only the URLs that are not indexed** to the Google Indexing API (+ IndexNow). Mails a report.\n\n**Credentials**\n- **Basic Auth** (WordPress user + Application Password) → Fetch All Posts\n- **Google Service Account API**, \"Set up for use in HTTP Request node\" ON, scopes:\n`https://www.googleapis.com/auth/indexing, https://www.googleapis.com/auth/webmasters.readonly`\n→ Inspect URL + Google Indexing API. Add the service account e-mail as an **Owner** of the Search Console property.\n- **SMTP** → Send Report Mail\n\n**Config**: site URL, `search_console_property` (`sc-domain:example.com` or `https://example.com/`), optional IndexNow key.\n\nManual trigger — swap in a Schedule Trigger if you want it periodic (mind the quotas).",
+        "height": 760,
+        "width": 500
+      },
+      "id": "d77a31b1-ed2e-4c32-a68e-3ab9f467af25",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        -40
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config": {
+      "main": [
+        [
+          {
+            "node": "Fetch All Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch All Posts": {
+      "main": [
+        [
+          {
+            "node": "Build URL List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build URL List": {
+      "main": [
+        [
+          {
+            "node": "Loop Over URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over URLs": {
+      "main": [
+        [
+          {
+            "node": "Summarize Results",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Inspect URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inspect URL": {
+      "main": [
+        [
+          {
+            "node": "Evaluate Inspection",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evaluate Inspection": {
+      "main": [
+        [
+          {
+            "node": "Needs Indexing?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Needs Indexing?": {
+      "main": [
+        [
+          {
+            "node": "Google Indexing API",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Rate Limit (1s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Indexing API": {
+      "main": [
+        [
+          {
+            "node": "IndexNow Enabled?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IndexNow Enabled?": {
+      "main": [
+        [
+          {
+            "node": "IndexNow",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Record Index Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IndexNow": {
+      "main": [
+        [
+          {
+            "node": "Record Index Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Record Index Result": {
+      "main": [
+        [
+          {
+            "node": "Rate Limit (1s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rate Limit (1s)": {
+      "main": [
+        [
+          {
+            "node": "Loop Over URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize Results": {
+      "main": [
+        [
+          {
+            "node": "Send Report Mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  }
+}

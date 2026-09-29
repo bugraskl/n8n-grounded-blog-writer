@@ -1,0 +1,189 @@
+{
+  "wp_site_url": "https://your-site.example.com",
+  "public_url_base": "",
+  "post_status": "publish",
+  "wp_category_ids": [],
+  "language": "English",
+  "locale": "en-US",
+  "audience": "software developers",
+  "autocomplete_hl": "en",
+  "autocomplete_gl": "us",
+  "keyword_examples": [
+    "docker compose tutorial",
+    "react server components explained",
+    "postgresql index types",
+    "claude code vs cursor",
+    "kubernetes ingress explained"
+  ],
+  "banned_phrases": [
+    "in this post",
+    "in this article",
+    "nowadays",
+    "in the rapidly evolving world of",
+    "plays an important role",
+    "in conclusion",
+    "it should be noted that",
+    "game-changing",
+    "modern",
+    "powerful",
+    "efficient",
+    "revolutionary"
+  ],
+  "fake_experience_patterns": [
+    "15 years of experience",
+    "I personally worked",
+    "we experienced this in our project"
+  ],
+  "require_code_example": true,
+  "target_words_min": 1800,
+  "target_words_max": 2800,
+  "gate_min_words": 1200,
+  "overused_window_days": 14,
+  "model_research": "gemini-pro-latest",
+  "model_writer": "gemini-pro-latest",
+  "model_image_prompt": "gemini-3-flash-preview",
+  "model_image": "gemini-3.1-flash-image",
+  "trend_sources": {
+    "hackernews": {
+      "enabled": true,
+      "min_points": 150
+    },
+    "devto": {
+      "enabled": true,
+      "tag": ""
+    },
+    "github": {
+      "enabled": true,
+      "extra_query": ""
+    },
+    "reddit": {
+      "enabled": true,
+      "subreddits": [
+        "programming"
+      ]
+    }
+  },
+  "http_user_agent": "Mozilla/5.0 (compatible; n8n-blog-bot/1.0)",
+  "categories": [
+    {
+      "code": "A",
+      "name": "AI Coding Agents & Developer AI",
+      "topics": "Claude Code, Cursor, agent workflows, MCP protocol, code review automation, prompt engineering for dev tools, tool-use patterns"
+    },
+    {
+      "code": "B",
+      "name": "Practical ML Engineering",
+      "topics": "model deployment, A/B testing for ML, feature stores, data drift, training pipeline design, MLOps fundamentals"
+    },
+    {
+      "code": "C",
+      "name": "AI Hardware & Deployment",
+      "topics": "GPU inference, edge devices, quantization, ONNX, vLLM, model serving strategies"
+    },
+    {
+      "code": "D",
+      "name": "Web Backend Engineering",
+      "topics": "REST/GraphQL API design, rate limiting, caching layers, websocket scaling, background job processing, queue patterns"
+    },
+    {
+      "code": "E",
+      "name": "Web Frontend Engineering",
+      "topics": "React/Vue/Svelte patterns, state management, performance (Core Web Vitals), bundle optimization, SSR vs CSR vs ISR, hydration"
+    },
+    {
+      "code": "F",
+      "name": "Mobile Development",
+      "topics": "Flutter, React Native, native iOS/Android, cross-platform strategies, mobile performance, offline-first design"
+    },
+    {
+      "code": "G",
+      "name": "Databases & Query Engineering",
+      "topics": "index design, query optimization, partitioning, replication, ACID vs eventual consistency, time-series, vector DB"
+    },
+    {
+      "code": "H",
+      "name": "Data Engineering & Streaming",
+      "topics": "Kafka, Pulsar, Flink, Spark, batch vs streaming, schema evolution, data lake/lakehouse, ETL patterns"
+    },
+    {
+      "code": "I",
+      "name": "DevOps & CI/CD",
+      "topics": "pipeline design, GitOps, deployment strategies (blue-green, canary), Infrastructure-as-Code, secrets management"
+    },
+    {
+      "code": "J",
+      "name": "Cloud Infrastructure & Kubernetes",
+      "topics": "K8s patterns, container security, networking, autoscaling, service mesh, multi-cloud, cost optimization"
+    },
+    {
+      "code": "K",
+      "name": "Security & Authentication",
+      "topics": "OAuth flows, JWT pitfalls, zero-trust, secrets rotation, mTLS, OWASP, supply chain security"
+    },
+    {
+      "code": "L",
+      "name": "Software Architecture & Design",
+      "topics": "DDD, hexagonal architecture, event sourcing, CQRS, modular monolith vs microservices, saga pattern, ADR"
+    },
+    {
+      "code": "M",
+      "name": "Performance Engineering",
+      "topics": "profiling, memory optimization, concurrency, lock contention, cache locality, latency budgets, p99 optimization"
+    },
+    {
+      "code": "N",
+      "name": "Testing & Quality Engineering",
+      "topics": "test pyramid, contract testing, mutation testing, property-based testing, integration test strategies, fuzz testing"
+    }
+  ],
+  "formats": [
+    {
+      "code": "migration",
+      "name": "Migration Guide",
+      "description": "Gradual migration from one technology to another",
+      "guide": "Current state -> target state. Phased migration plan. Rollback strategy. Risk points."
+    },
+    {
+      "code": "tutorial",
+      "name": "Tutorial / Build from Scratch",
+      "description": "Step-by-step guide that builds something from scratch with a working example",
+      "guide": "Step-by-step structure (Step 1, Step 2, ...). Every step contains a working code example. End with a \"production readiness\" checklist."
+    },
+    {
+      "code": "comparison",
+      "name": "Comparison / X vs Y",
+      "description": "Comparison of two or more technologies or approaches",
+      "guide": "Comparison table + deep analysis of each option. A clear \"which one for which scenario\" section."
+    },
+    {
+      "code": "patterns",
+      "name": "Patterns / Best Practices",
+      "description": "A collection of 3-7 patterns in one area",
+      "guide": "List 3-7 patterns. For each: problem, solution, working code, when to apply it, when not to apply it."
+    },
+    {
+      "code": "case-study",
+      "name": "Case Study / Optimization",
+      "description": "Deep technical analysis of one concrete case",
+      "guide": "One concrete case. Before/after metrics, decisions made, trade-offs."
+    },
+    {
+      "code": "pitfalls",
+      "name": "Mistakes / Pitfalls",
+      "description": "3-5 common mistakes in one area and how to fix them",
+      "guide": "3-5 common mistakes. For each: why it happens, how to detect it, how to fix it, a real-world example."
+    },
+    {
+      "code": "decision",
+      "name": "Decision Guide / When to Use",
+      "description": "A decision framework for when to choose X",
+      "guide": "Decision matrix + criteria + alternatives. Summary in \"If X -> Y\" form."
+    }
+  ],
+  "google_indexing_enabled": false,
+  "indexnow_key": "",
+  "indexnow_key_location": "",
+  "deploy_hook_url": "",
+  "mail_from": "blog-bot@example.com",
+  "mail_to": "you@example.com"
+}

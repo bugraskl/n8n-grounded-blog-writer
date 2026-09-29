@@ -1,0 +1,92 @@
+{
+  "name": "Error Notifier (email)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "58a5381a-89e5-4ad9-8ca0-32a20c26ec0d",
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"mail_from\": \"blog-bot@example.com\",\n  \"mail_to\": \"you@example.com\"\n}",
+        "options": {}
+      },
+      "id": "07571cf1-08a2-44bf-831e-59365bff68a9",
+      "name": "Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $('Config').first().json.mail_from }}",
+        "toEmail": "={{ $('Config').first().json.mail_to }}",
+        "subject": "=n8n workflow failed: {{ $('Error Trigger').first().json.workflow.name }}",
+        "html": "=<p><strong>Workflow:</strong> {{ $('Error Trigger').first().json.workflow.name }}</p>\n<p><strong>Failed node:</strong> {{ $('Error Trigger').first().json.execution.lastNodeExecuted || '-' }}</p>\n<p><strong>Error:</strong> {{ ($('Error Trigger').first().json.execution.error && $('Error Trigger').first().json.execution.error.message) || '-' }}</p>\n<p><strong>Execution:</strong> <a href=\"{{ $('Error Trigger').first().json.execution.url }}\">{{ $('Error Trigger').first().json.execution.url }}</a></p>",
+        "options": {}
+      },
+      "id": "18dc5dd9-cd6f-474a-89ef-02824c69cccf",
+      "name": "Send Error Mail",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        448,
+        0
+      ],
+      "webhookId": "9a9442da-1bf5-4c32-9eee-7fe2d7a4369d"
+    },
+    {
+      "parameters": {
+        "content": "## Error notifier\nOptional. In the blog workflow open **Settings → Error workflow** and pick this workflow. Hard failures (no valid topics, research brief empty, quality gate failed, Gemini errors) then arrive in your inbox.\n\nCredential: **SMTP**. Edit `Config`.",
+        "height": 260,
+        "width": 560
+      },
+      "id": "47f5d867-f47b-46b8-a38f-04d6a062b726",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        -300
+      ]
+    }
+  ],
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config": {
+      "main": [
+        [
+          {
+            "node": "Send Error Mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
